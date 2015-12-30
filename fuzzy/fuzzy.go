@@ -72,22 +72,27 @@ func find(source string, targets []string, fn func(rune) rune) []string {
 
 // FindIdx is like Find() but returns the positions of matching strings instead
 // of the strings theamselves
-func FindIdx(source string, targets []string) []int {
-	return findidx(source, targets, noop)
+func FindIdx(source string, targets []string, limit int) []int {
+	return findidx(source, targets, noop, limit)
 }
 
 // FindFoldIdx is like FindFold but returns indexes to the found items instead
 // of the strings themselves
-func FindFoldIdx(source string, targets []string) []int {
-	return findidx(source, targets, unicode.ToLower)
+func FindFoldIdx(source string, targets []string, limit int) []int {
+	return findidx(source, targets, unicode.ToLower, limit)
 }
 
-func findidx(source string, targets []string, fn func(rune) rune) []int {
+func findidx(source string, targets []string, fn func(rune) rune, limit int) []int {
 	var matches []int
 
 	for idx, target := range targets {
 		if match(source, target, fn) {
 			matches = append(matches, idx)
+
+			// Honor the limit parameter
+			if len(matches) >= limit && limit > 0 {
+				return matches
+			}
 		}
 	}
 
