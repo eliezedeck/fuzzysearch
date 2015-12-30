@@ -71,7 +71,7 @@ func find(source string, targets []string, fn func(rune) rune) []string {
 }
 
 // FindIdx is like Find() but returns the positions of matching strings instead
-// of the strings themselves
+// of the strings theamselves
 func FindIdx(source string, targets []string) []int {
 	return findidx(source, targets, noop)
 }
